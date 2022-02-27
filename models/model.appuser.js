@@ -34,6 +34,16 @@ module.exports = class AppUser {
         return [text, values];
     }
 
+    //fetch user details
+    static GetUser(id){
+        const text = `
+        SELECT user_name, user_phone_number, user_email, user_emergency_contact_number, user_emergency_contact_name
+        FROM app_user WHERE user_id = $1`
+
+        const values = [id];
+        return [text, values];
+    }
+
     //updating user password
     static UpdateUserPassword(id, password){
         const text = `
