@@ -11,6 +11,7 @@ module.exports = class Request {
         //TODO: change handling station from NOT NULL to normal in postgres
         //TODO: add boolean value that determines whether request is currently active or not
     }
+    //
 
     static InsertRequest(coordinate_x, coordinate_y, note, requesting_user){
         const text = `
