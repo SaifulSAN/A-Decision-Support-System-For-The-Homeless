@@ -6,6 +6,7 @@ module.exports = class Organization {
         this.secondary_contact_number = secondary_contact_number;
         this.email = email;
         this.password = password;
+        this.org_active = true;
         //TODO: add boolean value to determine if organization has been approved or not
     }
 

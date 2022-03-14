@@ -7,6 +7,7 @@ module.exports = class AppUser {
         this.password = password;
         this.emergency_contact_number = emergency_contact_number;
         this.emergency_contact_name = emergency_contact_name;
+        this.user_active = true;
     }
 
     //for user registration
