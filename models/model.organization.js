@@ -1,3 +1,6 @@
+// const bcrypt = require('bcrypt');
+// const saltRounds = 12;
+
 module.exports = class Organization {
     constructor(id, name, primary_contact_number, secondary_contact_number, email, password){
         this.id = id;
@@ -17,8 +20,10 @@ module.exports = class Organization {
         VALUES ($1, $2, $3, $4, $5)`
 
         //TODO: remember to hash + salt password
+        //const salt = await bcrypt.genSalt(saltRounds);
+        //const hash_pw = await bcrypt.hash(password, salt);
 
-        const values = [id, name, primary_contact_number, secondary_contact_number, email, password];
+        const values = [id, name, primary_contact_number, secondary_contact_number, email, hash_pw];
         return [text, values];
     }
 
@@ -54,8 +59,10 @@ module.exports = class Organization {
         WHERE organization_id = $1`
 
         //TODO: hash and salt passwords again
+        //const salt = await bcrypt.genSalt(saltRounds);
+        //const hash_pw = await bcrypt.hash(password, salt);
 
-        const values = [id, password];
+        const values = [id, hash_pw];
         return [text, values];
     }
 

@@ -1,3 +1,6 @@
+// const bcrypt = require('bcrypt');
+// const saltRounds = 12;
+
 module.exports = class AppUser {
     constructor(id, name, phone_number, email, password, emergency_contact_number, emergency_contact_name){
         this.id = id;
@@ -16,6 +19,10 @@ module.exports = class AppUser {
         INSERT INTO app_user (user_name, user_phone_number, user_email, user_password) VALUES ($1, $2, $3, $4)`
 
         //TODO: remember to hash + salt password
+        //hash+salt in controlller?
+        //const salt = await bcrypt.genSalt(saltRounds);
+        //const hash_pw = await bcrypt.hash(password, salt);
+
         const values = [name, phone_number, email, password];
         return [text, values];
     }
@@ -53,8 +60,10 @@ module.exports = class AppUser {
         WHERE user_id = $1`
 
         //TODO: hash and salt passwords again
+        //const salt = await bcrypt.genSalt(saltRounds);
+        //const hash_pw = await bcrypt.hash(password, salt);
 
-        const values = [id, password];
+        const values = [id, hash_pw];
         return [text, values];
     }
 

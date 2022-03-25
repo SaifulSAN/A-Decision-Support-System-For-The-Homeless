@@ -8,11 +8,8 @@ module.exports = class Request {
         this.handling_station = handling_station;
         this.requesting_user = requesting_user;
         this.request_active = true; //default value
-        //TODO: change handling org from NOT NULL to normal in postgres
-        //TODO: change handling station from NOT NULL to normal in postgres
-        //TODO: add boolean value that determines whether request is currently active or not
+        //boolean value that determines whether request is currently active or not
     }
-    //
 
     static InsertRequest(coordinate_x, coordinate_y, note, requesting_user){
         const text = `
@@ -26,8 +23,8 @@ module.exports = class Request {
     //TODO: allow users to edit request details on the fly? or just delete + remake new request
     //static UpdateRequest()
 
-    static DeleteRequest(id, bool){
-        //TODO: add boolean value that determines whether request is currently active or not
+    static SetRequestStatus(id, bool){
+        //boolean value that determines whether request is currently active or not
         const text = `
         UPDATE request SET request_active = $2 WHERE request_id = $1`
 

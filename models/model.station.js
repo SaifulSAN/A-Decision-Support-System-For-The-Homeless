@@ -6,7 +6,7 @@ module.exports = class Station {
         this.coordinate_y = coordinate_y;
         this.handling_org = handling_org;
         this.station_active = true; //default value
-        //TODO: add boolean attribute to station, true for active stations, false for station no longer in use
+        //true for active stations, false for station no longer in use
         //stations no longer in use will be removed from map
     }
 
@@ -21,7 +21,7 @@ module.exports = class Station {
     }
 
     static SetStationStatus(id, bool){
-        //TODO: set station available attribute to false, therefore disabling station
+        //set station available attribute to false, therefore disabling station
         const text = `
         UPDATE station SET station_active = $2 WHERE station_id = $1`
 
