@@ -63,16 +63,16 @@ module.exports = class AppUser {
         //const salt = await bcrypt.genSalt(saltRounds);
         //const hash_pw = await bcrypt.hash(password, salt);
 
-        const values = [id, hash_pw];
+        const values = [id, password];
         return [text, values];
     }
 
     //fetch password to compare against current password for password change
     static GetUserPasswordHashed(id){
         const text = `
-        SELECT user_password FROM app_user WHERE id = $1`
+        SELECT user_password FROM app_user WHERE user_id = $1`
 
-        const values = id;
+        const values = [id];
         return [text, values];
     }
 

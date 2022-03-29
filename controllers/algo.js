@@ -6,13 +6,13 @@ module.exports = class Point {
     }
 }
 
-let pointSet = [];
-pointSet.push(new Point(-1.0, 0.0));
-pointSet.push(new Point(0.0, 1.0));
-pointSet.push(new Point(1.0, 0.0));
-pointSet.push(new Point(0.0, -1.0));
+// let pointSet = [];
+// pointSet.push(new Point(-1.0, 0.0));
+// pointSet.push(new Point(0.0, 1.0));
+// pointSet.push(new Point(1.0, 0.0));
+// pointSet.push(new Point(0.0, -1.0));
 
-lower_limit = 0.01;
+// lower_limit = 0.01;
 
 // testPoint = new Point(10, 10);
 
@@ -32,6 +32,15 @@ function sumDistance(Point, setOfPoints, n){
 }
 
 function calcGeoMedian(setOfPoints, n){
+
+    let pointSet = [];
+    pointSet.push(new Point(-1.0, 0.0));
+    pointSet.push(new Point(0.0, 1.0));
+    pointSet.push(new Point(1.0, 0.0));
+    pointSet.push(new Point(0.0, -1.0));
+
+    lower_limit = 0.01;
+
     let curr_point = new Point;
 
     //console.log("BEFORE", curr_point);

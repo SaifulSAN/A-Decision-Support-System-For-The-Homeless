@@ -20,15 +20,24 @@ module.exports = class Request {
         return [text, values];
     }
 
+    static GetActiveRequests(id){
+        const text = `
+        SELECT request_coordinate_x, request_coordinate_y, request_note 
+        FROM request 
+        WHERE (requesting_user = $1 AND request_active = TRUE)`
+
+        const values = [id];
+        return [text, values];
+    }
+
     //TODO: allow users to edit request details on the fly? or just delete + remake new request
     //static UpdateRequest()
 
-    static SetRequestStatus(id, bool){
-        //boolean value that determines whether request is currently active or not
+    static SetRequestStatusInactive(id){
         const text = `
-        UPDATE request SET request_active = $2 WHERE request_id = $1`
+        UPDATE request SET request_active = FALSE WHERE request_id = $1`
 
-        const values = [id, bool];
+        const values = [id];
         return [text, values];
     }
 }

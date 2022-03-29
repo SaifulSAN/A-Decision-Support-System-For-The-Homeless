@@ -23,7 +23,7 @@ module.exports = class Organization {
         //const salt = await bcrypt.genSalt(saltRounds);
         //const hash_pw = await bcrypt.hash(password, salt);
 
-        const values = [id, name, primary_contact_number, secondary_contact_number, email, hash_pw];
+        const values = [id, name, primary_contact_number, secondary_contact_number, email, password];
         return [text, values];
     }
 
@@ -62,7 +62,7 @@ module.exports = class Organization {
         //const salt = await bcrypt.genSalt(saltRounds);
         //const hash_pw = await bcrypt.hash(password, salt);
 
-        const values = [id, hash_pw];
+        const values = [id, password];
         return [text, values];
     }
 
