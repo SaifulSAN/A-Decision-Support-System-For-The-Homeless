@@ -20,6 +20,18 @@ module.exports = class Station {
         return [text, values];
     }
 
+    //lists ALL active stations
+    static GetActiveStation(){
+        const text = `
+        SELECT station_name, station_coordinate_x, station_coordinate_y, handling_org 
+        FROM station 
+        WHERE station_active IS TRUE`
+
+        return text;
+    }
+
+    //lists ALL active stations owned by org
+
     static SetStationStatus(id, bool){
         //set station available attribute to false, therefore disabling station
         const text = `

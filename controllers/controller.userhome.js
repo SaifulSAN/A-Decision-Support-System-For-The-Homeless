@@ -3,6 +3,7 @@ const Point = require('../controllers/algo');
 const { pool } = require('../dbConfig');
 const bcrypt = require('bcrypt');
 const { hash } = require('bcrypt');
+const { query } = require('express');
 const saltRounds = 12;
 
 exports.UpdateUserDetails = async (req,res,next) => {
@@ -70,8 +71,20 @@ exports.UpdateUserPassword = async (req,res,next) => {
     }
 }
 
-exports.CalculateOptimalPlacement = async (req,res,next) => {
-    res.write('Calculating...')
+//remember to delete
+exports.Give = async (req,res,next) => {
+    //res.write('testing returns');
 
-    
+    try{
+        let [text] = AppUser.Give();
+        const queryresult = await pool.query(text);
+        console.log(queryresult.rows);
+        const count = queryresult.rows.length;
+        console.log(count);
+        //console.log(queryresult.rows[0]);
+        //res.send(queryresult);
+    } catch (err) {
+        console.log(err.stack);
+        next(err);
+    }
 }

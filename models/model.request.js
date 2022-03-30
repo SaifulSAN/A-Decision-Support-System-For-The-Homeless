@@ -20,14 +20,25 @@ module.exports = class Request {
         return [text, values];
     }
 
-    static GetActiveRequests(id){
+    //for user to get their active requests
+    static GetActiveRequestsUser(id){
         const text = `
         SELECT request_coordinate_x, request_coordinate_y, request_note 
         FROM request 
-        WHERE (requesting_user = $1 AND request_active = TRUE)`
+        WHERE (requesting_user = $1 AND request_active IS TRUE)`
 
         const values = [id];
         return [text, values];
+    }
+
+    //for org to get active requests
+    static GetActiveRequestsOrg(){
+        const text = `
+        SELECT request_coordinate_x, request_coordinate_y 
+        FROM request 
+        WHERE (request_active IS TRUE)`
+
+        return [text];
     }
 
     //TODO: allow users to edit request details on the fly? or just delete + remake new request

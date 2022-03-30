@@ -12,6 +12,7 @@ module.exports = app => {
 
     router.put('/updatepw', userhome.UpdateUserPassword);
     router.put('/userupdate', userhome.UpdateUserDetails);
+    router.get('/give', userhome.Give); //remember to delete
 
     app.use('/', router);
 }

@@ -42,8 +42,16 @@ module.exports = class AppUser {
         return [text, values];
     }
 
+    //dummy function remember to delete
+    static Give(){
+        const text = `
+        SELECT user_id, user_name, user_email FROM app_user`
+
+        return [text];
+    }
+
     //fetch user details
-    static GetUser(id){
+    static GetUserDetails(id){
         const text = `
         SELECT user_name, user_phone_number, user_email, user_emergency_contact_number, user_emergency_contact_name
         FROM app_user WHERE user_id = $1`

@@ -1,4 +1,4 @@
-module.exports = class Point {
+class Point {
 
     constructor(xVal, yVal){
         this.xVal = Number(xVal);
@@ -119,6 +119,7 @@ function calcGeoMedian(setOfPoints, n){
             test_distance = test_distance / 2;
         }
     }
+
 
     console.log("Optimized point is at coordinate (" + curr_point["xVal"] + ", " + curr_point["yVal"]+")");
     console.log("Minimum total distance from all points: ", minimumDistance);
