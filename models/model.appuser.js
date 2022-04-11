@@ -27,6 +27,22 @@ module.exports = class AppUser {
         return [text, values];
     }
 
+    static LoginUserPasswordCmp(email){
+        const text = `
+        SELECT user_id, user_password FROM app_user WHERE user_email = $1`
+
+        const values = [email];
+        return [text, values];
+    }
+
+    static CheckUserExistEmail(email){
+        const text = `
+        SELECT EXISTS (SELECT 1 FROM app_user WHERE user_email = $1)`
+
+        const values = [email];
+        return [text, values];
+    }
+
     //for updating user details
     static UpdateUser(id, name, phone_number, email, emergency_contact_number, emergency_contact_name){
         const text = `
@@ -81,6 +97,30 @@ module.exports = class AppUser {
         SELECT user_password FROM app_user WHERE user_id = $1`
 
         const values = [id];
+        return [text, values];
+    }
+
+    static StoreUserRefreshToken(id, token_string){
+        const text = `
+        INSERT INTO app_user_token (user_id, app_user_refresh_token) VALUES ($1, $2)`
+
+        const values = [id, token_string];
+        return [text, values];
+    }
+
+    static FindUserRefreshToken(token_string){
+        const text = `
+        SELECT user_id from app_user_token WHERE app_user_refresh_token = $1`
+
+        const values = [token_string];
+        return [text, values];
+    }
+
+    static LogoutUser(token_string){
+        const text = `
+        DELETE FROM app_user_token WHERE app_user_refresh_token = $1`
+
+        const values = [token_string];
         return [text, values];
     }
 

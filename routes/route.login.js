@@ -1,5 +1,6 @@
 module.exports = app => {
     const login = require('../controllers/controller.login');
+    const authUser = require('../controllers/controller.authuser');
     const router = require('express').Router();
 
     router.get('/favicon.ico', (req,res) =>{
@@ -10,7 +11,8 @@ module.exports = app => {
         res.send('/login working right now');
     })
 
-    router.post('/register', login.RegisterUser);
+    router.post('/loginuser', authUser.UserLogin);
+    router.post('/registeruser', authUser.RegisterUser);
 
     app.use('/', router);
 }

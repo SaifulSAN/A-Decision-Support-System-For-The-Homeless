@@ -74,4 +74,28 @@ module.exports = class Organization {
         const values = id;
         return [text, values];
     }
+
+    static CheckOrgExistEmail(email){
+        const text = `
+        SELECT EXISTS (SELECT 1 FROM organization WHERE organization_email = $1)`
+
+        const values = [email];
+        return [text, values];
+    }
+
+    static LoginOrgPasswordCmp(email){
+        const text = `
+        SELECT organization_id, organization_password FROM organization WHERE organization_email = $1`
+
+        const values = [email];
+        return [text, values];
+    }
+
+    static StoreOrgRefreshToken(id, token_string){
+        const text = `
+        INSERT INTO org_token (org_id, org_refresh_token) VALUES ($1, $2)`
+
+        const values = [id, token_string];
+        return [text, values];
+    }
 }

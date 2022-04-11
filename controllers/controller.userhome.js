@@ -31,6 +31,22 @@ exports.UpdateUserDetails = async (req,res,next) => {
     }
 }
 
+exports.GetUserDetails = async (req,res,next) => {
+    //res.write('fetching user details...')
+
+    let id = req.user;
+
+    try {
+        let [text, values] = AppUser.GetUserDetails(id);
+        const query_results = await pool.query(text, values);
+        //console.log(query_results.rows[0].user_name);
+        res.send(query_results.rows[0]);
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+}
+
 exports.UpdateUserPassword = async (req,res,next) => {
     res.write('Updating password...');
 

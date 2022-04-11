@@ -5,39 +5,6 @@ const bcrypt = require('bcrypt');
 const { hash } = require('bcrypt');
 const saltRounds = 12;
 
-//function to register USER ONLY (org uses different)
-exports.RegisterUser = async (req,res,next) => {
-    res.write('Registering user...');
-    //res.send(req.body);
-
-    let { name, phone_number, email, password } = req.body;
-    // console.log(name);
-    // console.log(phone_number);
-    // console.log(email);
-    // console.log(password);
-    
-    //hash + salt pw
-    const salt = await bcrypt.genSalt(saltRounds);
-    const hash_pw = await bcrypt.hash(password, salt);
-
-    // console.log(hash_pw);
-
-    try{
-        const [text, values] = AppUser.InsertUser(name, phone_number, email, hash_pw);
-        await pool.query(text, values);
-        res.write("Successfully registered!");
-    } catch (err){
-        if(err.constraint == 'app_user_user_email_key'){
-            res.write("ERROR: Email already registered!!")
-        }
-        if(err.constraint == 'app_user_user_phone_number_key'){
-            res.write("ERROR: Phone number already registered!!")
-        }
-        next(err);
-    }
-    
-}
-
 //TODO: REMEMBER TO MOVE THIS TO USER DETAILS PAGE, THIS IS NOT FOR RESETTING PASSWORD IF YOU FORGOT
 //USE A PROPER JWT METHOD TO DO THE ABOVE
 // exports.UpdateUserPassword = async (req,res,next) => {
