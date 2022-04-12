@@ -9,7 +9,8 @@ const saltRounds = 12;
 exports.UpdateUserDetails = async (req,res,next) => {
     res.write("Updating user details...");
 
-    let { id, name, phone_number, email, emergency_contact_number, emergency_contact_name } = req.body;
+    let id = req.user;
+    let { name, phone_number, email, emergency_contact_number, emergency_contact_name } = req.body;
 
     try {
         let [text, values] = AppUser.UpdateUser(id, name, phone_number, email, emergency_contact_number, emergency_contact_name);
@@ -50,7 +51,8 @@ exports.GetUserDetails = async (req,res,next) => {
 exports.UpdateUserPassword = async (req,res,next) => {
     res.write('Updating password...');
 
-    let { id, old_password, new_password } = req.body;
+    let id = req.user;
+    let { old_password, new_password } = req.body;
 
     const salt = await bcrypt.genSalt(saltRounds);
     const new_hash_pw = await bcrypt.hash(new_password, salt);

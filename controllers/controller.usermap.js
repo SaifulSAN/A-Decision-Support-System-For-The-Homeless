@@ -5,10 +5,11 @@ const { pool } = require('../dbConfig');
 exports.InsertRequest = async (req,res,next) => {
     res.write('Inserting request...');
 
-    let { coordinate_x, coordinate_y, note, requesting_user } = req.body;
+    let id = req.user;
+    let { coordinate_x, coordinate_y, note } = req.body;
 
     try {
-        const [text, values] = Request.InsertRequest(coordinate_x, coordinate_y, note, requesting_user);
+        const [text, values] = Request.InsertRequest(coordinate_x, coordinate_y, note, id);
         await pool.query(text, values);
         res.write('Successfully inserted!');
         res.end();

@@ -1,6 +1,6 @@
 module.exports = app => {
-    const login = require('../controllers/controller.login');
     const authUser = require('../controllers/controller.authuser');
+    const authOrg = require('../controllers/controller.authorg');
     const router = require('express').Router();
 
     router.get('/favicon.ico', (req,res) =>{
@@ -13,6 +13,8 @@ module.exports = app => {
 
     router.post('/loginuser', authUser.UserLogin);
     router.post('/registeruser', authUser.RegisterUser);
+    router.post('/loginorg', authOrg.OrgLogin);
+    router.post('/registerorg', authOrg.RegisterOrganization);
 
     app.use('/', router);
 }

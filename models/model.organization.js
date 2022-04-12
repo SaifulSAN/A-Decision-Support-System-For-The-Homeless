@@ -98,4 +98,20 @@ module.exports = class Organization {
         const values = [id, token_string];
         return [text, values];
     }
+
+    static FindOrgRefreshToken(token_string){
+        const text = `
+        SELECT org_id from org_token WHERE org_refresh_token = $1`
+
+        const values = [token_string];
+        return [text, values];
+    }
+
+    static LogoutOrg(token_string){
+        const text = `
+        DELETE FROM org_token WHERE org_refresh_token = $1`
+
+        const values = [token_string];
+        return [text, values];
+    }
 }

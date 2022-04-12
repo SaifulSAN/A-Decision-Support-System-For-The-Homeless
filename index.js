@@ -11,7 +11,7 @@ httpApp.use(express.json());
 
 httpApp.use(cookieParser());
 
-require('./routes/route.login.js')(httpApp);
+require('./routes/route.auth.js')(httpApp);
 require('./routes/route.refreshuser')(httpApp);
 require('./routes/route.logoutuser')(httpApp);
 

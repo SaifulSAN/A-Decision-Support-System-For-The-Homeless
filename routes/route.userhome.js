@@ -7,13 +7,11 @@ module.exports = app => {
         return 'your faveicon';
     })
 
-    router.get('/home', (req,res) =>{
-        res.send('working right now')
-    });
+    router.put('/userupdatepw', verifyJwtUser, userhome.UpdateUserPassword);
+    router.put('/userupdatedetails', verifyJwtUser, userhome.UpdateUserDetails);
+    router.get('/getuserdetails', verifyJwtUser, userhome.GetUserDetails);
 
-    router.put('/updatepw', userhome.UpdateUserPassword);
-    router.put('/userupdate', userhome.UpdateUserDetails);
-    router.get('/userdetails', verifyJwtUser, userhome.GetUserDetails);
+    
     router.get('/give', userhome.Give); //remember to delete
 
     app.use('/', router);
