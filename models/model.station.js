@@ -5,7 +5,8 @@ module.exports = class Station {
         this.coordinate_x = coordinate_x;
         this.coordinate_y = coordinate_y;
         this.handling_org = handling_org;
-        //TODO: add boolean attribute to station, true for active stations, false for station no longer in use
+        this.station_active = true; //default value
+        //true for active stations, false for station no longer in use
         //stations no longer in use will be removed from map
     }
 
@@ -19,7 +20,24 @@ module.exports = class Station {
         return [text, values];
     }
 
-    static DisableStation(bool){
-        //TODO: set station available attribute to false, therefore disabling station
+    //lists ALL active stations
+    static GetActiveStation(){
+        const text = `
+        SELECT station_name, station_coordinate_x, station_coordinate_y, handling_org 
+        FROM station 
+        WHERE station_active IS TRUE`
+
+        return text;
+    }
+
+    //lists ALL active stations owned by org
+
+    static SetStationStatus(id, bool){
+        //set station available attribute to false, therefore disabling station
+        const text = `
+        UPDATE station SET station_active = $2 WHERE station_id = $1`
+
+        const values = [id, bool];
+        return [text, values];
     }
 }

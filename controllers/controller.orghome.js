@@ -1,42 +1,36 @@
-const AppUser = require('../models/model.appuser');
+const Organization = require('../models/model.organization');
 const { pool } = require('../dbConfig');
 const bcrypt = require('bcrypt');
 const { hash } = require('bcrypt');
 const saltRounds = 12;
 
-exports.UpdateUserDetails = async (req,res,next) => {
-    res.write("Updating user details...");
+exports.UpdateOrgDetails = async (req,res,next) => {
+    //res.write("Updating user details...");
 
     let id = req.user;
-    let { name, phone_number, email, emergency_contact_number, emergency_contact_name } = req.body.data;
+    let { name, primary_contact_number, secondary_contact_number, email } = req.body.data;
 
     try {
-        let [text, values] = AppUser.UpdateUser(id, name, phone_number, email, emergency_contact_number, emergency_contact_name);
+        let [text, values] = Organization.UpdateOrganization(id, name, primary_contact_number, secondary_contact_number, email);
         await pool.query(text, values);
-        res.write("Successfully updated!");
-        res.end();
+        res.json({"message": "Successfully updated"});
 
     } catch (err) {
-        if(err.constraint == 'app_user_user_email_key'){
-            res.write("ERROR: Email already in use!! Unique email needed.");
-            res.end();
-        }
-        if(err.constraint == 'app_user_user_phone_number_key'){
-            res.write("ERROR: Phone number already in use!! Unique phone number needed.");
-            res.end();
+        if(err.constraint == 'organization_organization_email_key'){
+            res.json({"message": "ERROR: Email already in use!! Unique email needed."});
         }
         console.log(err);
         next(err);
     }
 }
 
-exports.GetUserDetails = async (req,res,next) => {
+exports.GetOrgDetails = async (req,res,next) => {
     //res.write('fetching user details...')
 
     let id = req.user;
 
     try {
-        let [text, values] = AppUser.GetUserDetails(id);
+        let [text, values] = Organization.GetOrganization(id);
         const query_results = await pool.query(text, values);
         //console.log(query_results.rows[0].user_name);
         res.send(query_results.rows[0]);
@@ -50,7 +44,7 @@ exports.UpdateUserPassword = async (req,res,next) => {
     res.write('Updating password...');
 
     let id = req.user;
-    let { old_password, new_password } = req.body.data;
+    let { old_password, new_password } = req.body;
 
     const salt = await bcrypt.genSalt(saltRounds);
     const new_hash_pw = await bcrypt.hash(new_password, salt);
@@ -81,24 +75,6 @@ exports.UpdateUserPassword = async (req,res,next) => {
             res.end();
         }
 
-    } catch (err) {
-        console.log(err.stack);
-        next(err);
-    }
-}
-
-//remember to delete
-exports.Give = async (req,res,next) => {
-    //res.write('testing returns');
-
-    try{
-        let [text] = AppUser.Give();
-        const queryresult = await pool.query(text);
-        console.log(queryresult.rows);
-        const count = queryresult.rows.length;
-        console.log(count);
-        //console.log(queryresult.rows[0]);
-        //res.send(queryresult);
     } catch (err) {
         console.log(err.stack);
         next(err);
