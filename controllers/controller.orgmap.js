@@ -3,7 +3,7 @@ const { pool } = require('../dbConfig');
 
 //calculates optimal placement of all given points (ONLY FOR ORGANIZATION)
 exports.CalculateOptimalPlacement = async (req,res,next) => {
-    res.write('Calculating...')
+    //res.write('Calculating...')
     class Point {
 
         constructor(xVal, yVal){
@@ -117,23 +117,39 @@ exports.CalculateOptimalPlacement = async (req,res,next) => {
         //get number of rows of requests retrieved from database which are ACTIVE
         requestCount = queryresult.rows.length;
 
-        //populate array with requests as Point objects
-        queryresult.rows.forEach((element) => {
+
+        if(requestCount > 0) {
+
+            //populate array with requests as Point objects
+            queryresult.rows.forEach((element) => {
             requestArray.push(new Point(element.request_coordinate_x, element.request_coordinate_y))
-        })
+            })
+
+            const optimalPoint = calcGeoMedian(requestArray, requestCount);
+
+            res.json({optimalPoint});
+        } else {
+            res.json({'message': 'No active requests found'});
+        }
 
     } catch(err) {
         console.log(err);
         next(err);
     }
-    
-    if(requestCount > 0){
-        res.write(calcGeoMedian(requestArray, requestCount));
-        res.end()
-    }
-    else {
-        res.write('No active requests found.')
-        res.end();
-    }
 
+}
+
+exports.GetAllActiveRequests = async (req, res, next) => {
+
+    try {
+        const [text, values] = Request.GetActiveRequestsOrg();
+        let query_result = await pool.query(text, values);
+        const requests = query_result.rows;
+
+        res.json({requests});
+
+    } catch (err) {
+        console.log(err);
+        res.json({'message' : 'No active requests found.'});
+    }
 }

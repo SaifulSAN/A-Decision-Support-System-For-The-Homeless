@@ -8,7 +8,7 @@ require('dotenv').config();
 
 //function to register organization only
 exports.RegisterOrganization = async (req,res,next) => {
-    res.write('Registering organization...');
+    //res.write('Registering organization...');
 
     let { name, primary_contact_number, secondary_contact_number, email, password } = req.body;
     
@@ -33,7 +33,7 @@ exports.OrgLogin = async (req,res,next) => {
     }
     
     try {
-        const [text, values] = Organization.CheckUserExistEmail(email)
+        const [text, values] = Organization.CheckOrgExistEmail(email)
         let query_result = await pool.query(text, values);
         const organization_exists = query_result.rows[0].exists;
         
@@ -48,12 +48,18 @@ exports.OrgLogin = async (req,res,next) => {
                 if (match){
                     //JWT
                     const accessToken = jwt.sign(
-                        { "id" : foundOrgId },
+                        { "userInfo" : {
+                            "id" : foundOrgId,
+                            "role" : 5900 }
+                        },
                         process.env.ACCESS_TOKEN_SECRET_ORG,
                         {expiresIn: '1h'}
                     );
                     const refreshToken = jwt.sign(
-                        { "id" : foundOrgId },
+                        { "userInfo" : {
+                            "id" : foundOrgId,
+                            "role" : 5900 }
+                        },
                         process.env.REFRESH_TOKEN_SECRET_ORG,
                         {expiresIn: '14 days'}
                     );
@@ -63,7 +69,7 @@ exports.OrgLogin = async (req,res,next) => {
                         await pool.query(text, values);
 
                         res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 14 * 24 * 60 * 60 * 1000});
-                        res.json({accessToken});
+                        res.json({accessToken, "roles" : [5900, 1]});
                     } catch (err) {
                         console.log(err)
                     }

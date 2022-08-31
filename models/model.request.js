@@ -14,7 +14,7 @@ module.exports = class Request {
     static InsertRequest(coordinate_x, coordinate_y, note, requesting_user){
         const text = `
         INSERT INTO request(request_coordinate_x, request_coordinate_y, request_note, requesting_user)
-        VALUES ($1, $2, $3, $4)`
+        VALUES ($1, $2, $3, $4) RETURNING request_id`
 
         const values = [coordinate_x, coordinate_y, note, requesting_user];
         return [text, values];
@@ -41,14 +41,23 @@ module.exports = class Request {
         return [text];
     }
 
+    static SetRequestStatusInactiveOnInsert(id){
+        const text = `
+        UPDATE request SET request_active = FALSE WHERE requesting_user = $1`
+
+        const values = [id];
+        return [text, values];
+    }
+
     //TODO: allow users to edit request details on the fly? or just delete + remake new request
     //static UpdateRequest()
 
-    static SetRequestStatusInactive(id){
+    static SetRequestStatusInactiveOnDemand(id){
         const text = `
         UPDATE request SET request_active = FALSE WHERE request_id = $1`
 
         const values = [id];
         return [text, values];
     }
+
 }

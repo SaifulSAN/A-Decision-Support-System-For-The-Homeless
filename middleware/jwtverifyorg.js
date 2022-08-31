@@ -6,7 +6,7 @@ const verifyJwtOrg = (req, res, next) => {
     if (!authHeader){
         return res.sendStatus(401);
     }
-    console.log(authHeader);
+    //console.log(authHeader);
     const token = authHeader.split(' ')[1];
     jwt.verify(
         token,
@@ -15,7 +15,8 @@ const verifyJwtOrg = (req, res, next) => {
             if (err){
                 return res.sendStatus(403);
             }
-            req.org = decoded.id;
+            req.user = decoded.userInfo.id;
+            req.role = decoded.userInfo.role;
             //console.log(req.user);
             next();
         }

@@ -57,12 +57,18 @@ exports.UserLogin = async (req,res,next) => {
                 if (match){
                     //JWT
                     const accessToken = jwt.sign(
-                        { "id" : foundUserId },
+                        { "userInfo" : {
+                            "id" : foundUserId,
+                            "role" : 2170 }
+                        },
                         process.env.ACCESS_TOKEN_SECRET_USER,
                         {expiresIn: '1h'}
                     );
                     const refreshToken = jwt.sign(
-                        { "id" : foundUserId },
+                        { "userInfo" : {
+                            "id" : foundUserId,
+                            "role" : 2170 }
+                        },
                         process.env.REFRESH_TOKEN_SECRET_USER,
                         {expiresIn: '14 days'}
                     );
@@ -72,18 +78,20 @@ exports.UserLogin = async (req,res,next) => {
                         await pool.query(text, values);
 
                         res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 14 * 24 * 60 * 60 * 1000});
-                        res.json({accessToken});
+                        res.json({accessToken, "roles" : [2170, 1]});
                     } catch (err) {
                         console.log(err)
                     }
                 } else {
-                    res.sendStatus(401);
+                    res.status(401);
+                    res.json({'message':'Incorrect email and/or password!'});
                 }
             } catch (err) {
                 console.log(err);
             }
         } else {
-            res.sendStatus(401);
+            res.status(401);
+            res.json({'message':'User not found!'});
         }
     } catch (err) {
         console.log(err);

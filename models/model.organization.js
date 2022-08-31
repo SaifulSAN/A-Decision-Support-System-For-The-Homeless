@@ -23,21 +23,21 @@ module.exports = class Organization {
         //const salt = await bcrypt.genSalt(saltRounds);
         //const hash_pw = await bcrypt.hash(password, salt);
 
-        const values = [id, name, primary_contact_number, secondary_contact_number, email, password];
+        const values = [name, primary_contact_number, secondary_contact_number, email, password];
         return [text, values];
     }
 
     //TODO: do we allow organizations to update their own details?
-    static UpdateOrganization(name, primary_contact_number, secondary_contact_number, email){
+    static UpdateOrganization(id, name, primary_contact_number, secondary_contact_number, email){
         const text = `
         UPDATE organization SET 
         organization_name = $2,
         organization_primary_contact_number = $3,
         organization_secondary_contact_number = $4,
         organization_email = $5
-        WHERE organization id = $1`
+        WHERE organization_id = $1`
 
-        const values = [name, primary_contact_number, secondary_contact_number, email];
+        const values = [id, name, primary_contact_number, secondary_contact_number, email];
         return [text, values];
     }
 
@@ -45,7 +45,7 @@ module.exports = class Organization {
     static GetOrganization(id){
         const text = `
         SELECT organization_name, organization_primary_contact_number, organization_secondary_contact_number, organization_email FROM organization
-        WHERE id = $1`
+        WHERE organization_id = $1`
 
         const values = [id];
         return [text, values];

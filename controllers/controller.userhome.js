@@ -1,16 +1,14 @@
 const AppUser = require('../models/model.appuser');
-const Point = require('../controllers/algo');
 const { pool } = require('../dbConfig');
 const bcrypt = require('bcrypt');
 const { hash } = require('bcrypt');
-const { query } = require('express');
 const saltRounds = 12;
 
 exports.UpdateUserDetails = async (req,res,next) => {
     res.write("Updating user details...");
 
     let id = req.user;
-    let { name, phone_number, email, emergency_contact_number, emergency_contact_name } = req.body;
+    let { name, phone_number, email, emergency_contact_number, emergency_contact_name } = req.body.data;
 
     try {
         let [text, values] = AppUser.UpdateUser(id, name, phone_number, email, emergency_contact_number, emergency_contact_name);
@@ -52,7 +50,7 @@ exports.UpdateUserPassword = async (req,res,next) => {
     res.write('Updating password...');
 
     let id = req.user;
-    let { old_password, new_password } = req.body;
+    let { old_password, new_password } = req.body.data;
 
     const salt = await bcrypt.genSalt(saltRounds);
     const new_hash_pw = await bcrypt.hash(new_password, salt);
